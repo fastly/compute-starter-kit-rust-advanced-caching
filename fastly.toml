@@ -1,0 +1,12 @@
+# This file describes a Fastly Compute package. To learn more visit:
+# https://www.fastly.com/documentation/reference/compute/fastly-toml
+
+authors = ["oss@fastly.com"]
+description = "Rust Starter Kit for Fastly Compute with advanced caching features"
+language = "rust"
+manifest_version = 3
+name = "compute-starter-kit-rust-advanced-caching"
+service_id = ""
+
+[scripts]
+  build = "cargo build --bin fastly-compute-project --release --target wasm32-wasi --color always"
