@@ -17,7 +17,10 @@ As of [version 0.11.0](https://www.fastly.com/documentation/reference/changes/20
 This starter kit gives you a starting point for calling these extension points, enabling you to understand and customize powerful caching behavior with Fastly Compute.
 
 > [!NOTE]
-> The advanced caching features whose uses are illustrated in this starter kit are not currently supported in Fastly's [local development server](https://www.fastly.com/documentation/guides/compute/testing/#running-a-local-testing-server). If you run this starter kit in the local development server, the before-send, after-send, and body-transform callback functions are applied on every request, as the development server does not emulate caching features.
+> The advanced caching features whose uses are illustrated in this starter kit are not currently supported in Fastly's [local development server](https://www.fastly.com/documentation/guides/compute/testing/#running-a-local-testing-server). Attempting to run this starter kit in the local development server may result in the following error:
+> ```
+> HTTP caching API is not enabled.
+> ```
 
 ## Understanding the code
 
