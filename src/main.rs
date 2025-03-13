@@ -1,9 +1,9 @@
 //! Default Compute template program.
 
-use std::time::Duration;
 use fastly::http::header;
 use fastly::{mime, Body, Error, Request, Response};
 use serde_json::Value;
+use std::time::Duration;
 
 /// The entry point for your application.
 ///
@@ -114,24 +114,21 @@ fn main(mut req: Request) -> Result<Response, Error> {
         // For details on the body-transform callback function, see
         // https://www.fastly.com/documentation/guides/concepts/edge-state/cache/#modifying-the-body-that-is-saved-to-the-cache
 
-        if let Some(contentType) = resp.get_content_type() {
-            if contentType == mime::APPLICATION_JSON {
-                resp.set_content_type(mime::TEXT_HTML);
-                resp.set_body_transform(|body_in, body_out| {
+        if Some(mime::APPLICATION_JSON) == resp.get_content_type() {
+            resp.set_content_type(mime::TEXT_HTML);
+            resp.set_body_transform(|body_in, body_out| {
+                println!("in body-transform callback function");
 
-                    println!("in body-transform callback function");
+                let json: Value = serde_json::from_str(&body_in.into_string()).unwrap();
 
-                    let json: Value = serde_json::from_str(&body_in.into_string()).unwrap();
+                let first_name = json["firstName"].as_str().unwrap_or_default();
+                let last_name = json["lastName"].as_str().unwrap_or_default();
+                let html = format!("<div>{} {}</div>", first_name, last_name);
 
-                    let first_name = json["firstName"].as_str().unwrap_or_default();
-                    let last_name = json["lastName"].as_str().unwrap_or_default();
-                    let html = format!("<div>{} {}</div>", first_name, last_name);
+                body_out.append(Body::from(html.as_bytes()));
 
-                    body_out.append(Body::from(html.as_bytes()));
-
-                    Ok(())
-                });
-            }
+                Ok(())
+            });
         }
 
         Ok(())
