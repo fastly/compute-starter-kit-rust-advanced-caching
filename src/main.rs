@@ -12,7 +12,6 @@ use std::time::Duration;
 /// make completely new requests, and/or generate synthetic responses.
 ///
 /// If `main` returns an error, a 500 error response will be delivered to the client.
-
 #[fastly::main]
 fn main(mut req: Request) -> Result<Response, Error> {
     // Log service version
@@ -71,7 +70,7 @@ fn main(mut req: Request) -> Result<Response, Error> {
         //
         // For details on CandidateResponse, see
         // https://www.fastly.com/documentation/guides/concepts/edge-state/cache/#the-candidateresponse-object
-        match resp.get_header_str("Content-Type").as_deref() {
+        match resp.get_header_str("Content-Type") {
             Some("image") => resp.set_ttl(Duration::from_secs(67)),
             Some("text/html") => resp.set_ttl(Duration::from_secs(321)),
             Some("application/xml") => resp.set_uncacheable(false),
